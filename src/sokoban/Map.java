@@ -80,14 +80,14 @@ public class Map {
     }
     
     public static void update() {
-        player.update();
-        
         int g = 0;
         for(Box b: boxes) {
             b.update();
             if(isGoal(b.x, b.y))
                 g++;
         }
+        
+        player.update();
         
         if(g == goals)
             load(nextMap);
