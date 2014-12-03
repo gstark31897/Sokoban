@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL11.glTranslatef;
  */
 public class Game {
     static {
-        Map.load("level_1.txt");
+        Map.load("level_4.txt");
     }
     
     public static void update() {
