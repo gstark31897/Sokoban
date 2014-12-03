@@ -27,6 +27,7 @@ public class Main {
         glMatrixMode(GL_PROJECTION);
         glOrtho(0, width, height, 0, -1, 1);
         glMatrixMode(GL_MODELVIEW);
+        glEnable(GL_TEXTURE_2D);
         glClearColor(0, 0, 0, 0);
         
         while(!Display.isCloseRequested()) {

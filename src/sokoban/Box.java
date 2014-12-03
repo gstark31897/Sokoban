@@ -7,6 +7,7 @@ package sokoban;
 
 import org.lwjgl.input.Keyboard;
 import static org.lwjgl.opengl.GL11.glColor3f;
+import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
 /**
@@ -112,9 +113,9 @@ public class Box {
     
     public void render() {
         glColor3f(1, 1, 1);
-        glVertex3f(xp, yp, 0);
-        glVertex3f(xp, yp+1, 0);
-        glVertex3f(xp+1, yp+1, 0);
-        glVertex3f(xp+1, yp, 0);
+        glTexCoord2f(0.50f, 0.0f); glVertex3f(xp, yp, 0);
+        glTexCoord2f(0.50f, 1.0f); glVertex3f(xp, yp+1, 0);
+        glTexCoord2f(0.75f, 1.0f); glVertex3f(xp+1, yp+1, 0);
+        glTexCoord2f(0.75f, 0.0f); glVertex3f(xp+1, yp, 0);
     }
 }
