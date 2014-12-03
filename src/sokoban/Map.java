@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.lwjgl.input.Keyboard;
 import static org.lwjgl.opengl.GL11.GL_QUADS;
 import static org.lwjgl.opengl.GL11.glBegin;
 import static org.lwjgl.opengl.GL11.glColor3f;
@@ -27,16 +28,20 @@ public class Map {
     static Player player;
     static ArrayList<Box> boxes;
     static String nextMap;
+    static String currentMap;
     public static void load(String mapPath) {
         try {
             Scanner scan = new Scanner(new File("src/res/" + mapPath));
+            currentMap = mapPath;
             nextMap = scan.nextLine();
             System.out.println(nextMap);
             player = new Player(scan.nextInt(), scan.nextInt());
+            System.out.println(player.x + "," + player.y);
             boxes = new ArrayList<Box>();
             int b = scan.nextInt();
             while(b != -1) {
                 boxes.add(new Box(b, scan.nextInt()));
+                System.out.println(b + "," + boxes.get(boxes.size()-1).y);
                 b = scan.nextInt();
             }
             
@@ -69,6 +74,9 @@ public class Map {
         
         if(g == goals)
             load(nextMap);
+        
+        if(Keyboard.isKeyDown(Keyboard.KEY_R))
+            load(currentMap);
     }
     
     public static boolean isClear(int x, int y) {

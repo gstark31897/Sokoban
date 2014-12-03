@@ -119,7 +119,7 @@ public class Player {
     }
     
     public void render() {
-        glColor3f(1, 1, 1);
+        glColor3f(0, 1, 0);
         glVertex3f(xp, yp, 0);
         glVertex3f(xp, yp+1, 0);
         glVertex3f(xp+1, yp+1, 0);

@@ -5,9 +5,11 @@
  */
 package sokoban;
 
+import org.lwjgl.opengl.Display;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glScalef;
+import static org.lwjgl.opengl.GL11.glTranslatef;
 
 /**
  *
@@ -15,7 +17,7 @@ import static org.lwjgl.opengl.GL11.glScalef;
  */
 public class Game {
     static {
-        Map.load("level_1.txt");
+        Map.load("level_3.txt");
     }
     
     public static void update() {
@@ -24,7 +26,8 @@ public class Game {
     
     public static void render() {
         glPushMatrix();
-        glScalef(8, 8, 8);
+        glScalef(32, 32, 32);
+        glTranslatef(-Map.player.xp+Display.getWidth()/64-0.5f, -Map.player.yp+Display.getHeight()/64-0.5f, 0);
         Map.render();
         glPopMatrix();
     }
