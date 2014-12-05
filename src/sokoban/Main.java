@@ -39,6 +39,8 @@ public class Main {
             Display.update();
             Display.sync(60);
         }
+        
+        Display.destroy();
     }
     
 }

@@ -54,20 +54,28 @@ public class Map {
             Scanner scan = new Scanner(new File("src/res/" + mapPath));
             currentMap = mapPath;
             nextMap = scan.nextLine();
-            player = new Player(scan.nextInt(), scan.nextInt());
+            
             boxes = new ArrayList<Box>();
-            int b = scan.nextInt();
-            while(b != -1) {
-                boxes.add(new Box(b, scan.nextInt()));
-                b = scan.nextInt();
-            }
             
             map = new int[scan.nextInt()][scan.nextInt()];
             
             for(int y = 0; y < map.length; y++) {
                 for(int x = 0; x < map[y].length; x++) {
                     int i = scan.nextInt();
-                    map[y][x] = i;
+                    switch(i) {
+                        case 4:
+                            player = new Player(x, y);
+                            map[y][x] = 1;
+                            break;
+                        case 5:
+                            boxes.add(new Box(x, y));
+                            map[y][x] = 1;
+                            break;
+                            
+                        default:
+                            map[y][x] = i;
+                            break;
+                    }
                 }
             }
             
