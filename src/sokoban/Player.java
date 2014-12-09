@@ -20,7 +20,7 @@ public class Player {
     int tx, ty;
     float xp, yp;
     int moveEllapsed;
-    
+    int lastDir;
     public Player(int x, int y) {
         this.x = x;
         this.y = y;
@@ -30,6 +30,7 @@ public class Player {
         ty = y;
         moveTime = 10;
         moveEllapsed = 0;
+        lastDir = -1;
     }
     
     public void update() {
@@ -38,7 +39,11 @@ public class Player {
             y = (int)(yp+0.5f);
             xp = x;
             yp = y;
-            input();
+            if(Map.isIce(x, y)) {
+                
+            }else {
+                input();
+            }
         }else{
             translate();
         }

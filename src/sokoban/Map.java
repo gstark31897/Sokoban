@@ -33,6 +33,7 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public class Map {
     static int[][] map;
+    static ArrayList<ArrayList<Integer>> initalMap;
     static int goals;
     static Player player;
     static ArrayList<Box> boxes;
@@ -57,25 +58,63 @@ public class Map {
             
             boxes = new ArrayList<Box>();
             
-            map = new int[scan.nextInt()][scan.nextInt()];
+            initalMap = new ArrayList<ArrayList<Integer>>();
+            /*
+            Wall	#	0x23
+            Player	@	0x40
+            Player on goal square	+	0x2b
+            Box	$	0x24
+            Box on goal square	*	0x2a
+            Goal square	.	0x2e
+            Floor	(Space)	0x20
+            */
             
-            for(int y = 0; y < map.length; y++) {
-                for(int x = 0; x < map[y].length; x++) {
-                    int i = scan.nextInt();
-                    switch(i) {
-                        case 4:
-                            player = new Player(x, y);
-                            map[y][x] = 1;
+            int i = 0;
+            int longest = 0;
+            while(scan.hasNextLine()) {
+                String line = scan.nextLine();
+                initalMap.add(new ArrayList<Integer>());
+                for(int c = 0; c < line.length(); c++) {
+                    if(c > longest)
+                        longest = c;
+                    switch(line.charAt(c)) {
+                        case '#':
+                            initalMap.get(i).add(2);
                             break;
-                        case 5:
-                            boxes.add(new Box(x, y));
-                            map[y][x] = 1;
+                        case '@':
+                            initalMap.get(i).add(1);
+                            player = new Player(c, i);
                             break;
-                            
-                        default:
-                            map[y][x] = i;
+                        case '+':
+                            initalMap.get(i).add(3);
+                            player = new Player(c, i);
+                            break;
+                        case '$':
+                            initalMap.get(i).add(1);
+                            boxes.add(new Box(c, i));
+                            break;
+                        case '*':
+                            initalMap.get(i).add(3);
+                            boxes.add(new Box(c, i));
+                            break;
+                        case '.':
+                            initalMap.get(i).add(3);
+                            break;
+                        case ' ':
+                            initalMap.get(i).add(0);
+                            break;
+                        case '-':
+                            initalMap.get(i).add(1);
                             break;
                     }
+                }
+                i++;
+            }
+            System.out.println(longest);
+            map = new int[initalMap.size()][longest+1];
+            for(int y = 0; y < initalMap.size(); y++) {
+                for(int x = 0; x < initalMap.get(y).size(); x++) {
+                    map[y][x] = initalMap.get(y).get(x);
                 }
             }
             
@@ -112,6 +151,10 @@ public class Map {
         return map[y][x] == 3;
     }
     
+    public static boolean isIce(int x, int y) {
+        return map[y][x] == 6;
+    }
+    
     public static int getGoals() {
         int g = 0;
         for(int y = 0; y < map.length; y++) {
@@ -134,25 +177,33 @@ public class Map {
                     case 1:
                         glColor3f(1, 1, 1);
                         glTexCoord2f(0.25f, 0.0f); glVertex3f(x, y, 0);
-                        glTexCoord2f(0.25f, 1.0f); glVertex3f(x, y+1, 0);
-                        glTexCoord2f(0.50f, 1.0f); glVertex3f(x+1, y+1, 0);
+                        glTexCoord2f(0.25f, 0.5f); glVertex3f(x, y+1, 0);
+                        glTexCoord2f(0.50f, 0.5f); glVertex3f(x+1, y+1, 0);
                         glTexCoord2f(0.50f, 0.0f); glVertex3f(x+1, y, 0);
                         break;
                         
                     case 2:
                         glColor3f(1, 1, 1);
                         glTexCoord2f(0.00f, 0.0f); glVertex3f(x, y, 0);
-                        glTexCoord2f(0.00f, 1.0f); glVertex3f(x, y+1, 0);
-                        glTexCoord2f(0.25f, 1.0f); glVertex3f(x+1, y+1, 0);
+                        glTexCoord2f(0.00f, 0.5f); glVertex3f(x, y+1, 0);
+                        glTexCoord2f(0.25f, 0.5f); glVertex3f(x+1, y+1, 0);
                         glTexCoord2f(0.25f, 0.0f); glVertex3f(x+1, y, 0);
                         break;
                         
                     case 3:
                         glColor3f(1, 1, 1);
                         glTexCoord2f(0.75f, 0.0f); glVertex3f(x, y, 0);
-                        glTexCoord2f(0.75f, 1.0f); glVertex3f(x, y+1, 0);
-                        glTexCoord2f(1.00f, 1.0f); glVertex3f(x+1, y+1, 0);
+                        glTexCoord2f(0.75f, 0.5f); glVertex3f(x, y+1, 0);
+                        glTexCoord2f(1.00f, 0.5f); glVertex3f(x+1, y+1, 0);
                         glTexCoord2f(1.00f, 0.0f); glVertex3f(x+1, y, 0);
+                        break;
+                        
+                    case 6:
+                        glColor3f(1, 1, 1);
+                        glTexCoord2f(0.00f, 0.5f); glVertex3f(x, y, 0);
+                        glTexCoord2f(0.00f, 1.0f); glVertex3f(x, y+1, 0);
+                        glTexCoord2f(0.25f, 1.0f); glVertex3f(x+1, y+1, 0);
+                        glTexCoord2f(0.25f, 0.5f); glVertex3f(x+1, y, 0);
                         break;
                 }
             }

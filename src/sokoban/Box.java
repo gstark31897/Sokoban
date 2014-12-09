@@ -18,6 +18,7 @@ public class Box {
     int x, y;
     int moveTime;
     int tx, ty;
+    int lastDir;
     float xp, yp;
     int moveEllapsed;
     
@@ -30,6 +31,7 @@ public class Box {
         ty = y;
         moveTime = 10;
         moveEllapsed = 0;
+        lastDir = -1;
     }
     
     public void update() {
@@ -38,6 +40,29 @@ public class Box {
             y = (int)(yp+0.5f);
             xp = x;
             yp = y;
+            if(Map.isIce(x, y)) {
+                switch(lastDir) {
+                    case 0:
+                        if(!moveRight())
+                            lastDir = -1;
+                        break;
+                        
+                    case 1:
+                        if(!moveUp())
+                            lastDir = -1;
+                        break;
+                        
+                    case 2:
+                        if(!moveLeft()) 
+                            lastDir = -1;
+                        break;
+                        
+                    case 3:
+                        if(!moveDown()) 
+                            lastDir = -1;
+                        break;
+                }
+            }
         }else{
             translate();
         }
@@ -52,6 +77,7 @@ public class Box {
         
         ty--;
         moveEllapsed = moveTime;
+        lastDir = 1;
         return true;
     }
     
@@ -64,6 +90,7 @@ public class Box {
         
         ty++;
         moveEllapsed = moveTime;
+        lastDir = 3;
         return true;
     }
     
@@ -76,6 +103,7 @@ public class Box {
         
         tx--;
         moveEllapsed = moveTime;
+        lastDir = 2;
         return true;
     }
     
@@ -88,6 +116,7 @@ public class Box {
         
         tx++;
         moveEllapsed = moveTime;
+        lastDir = 0;
         return true;
     }
     
@@ -114,8 +143,8 @@ public class Box {
     public void render() {
         glColor3f(1, 1, 1);
         glTexCoord2f(0.50f, 0.0f); glVertex3f(xp, yp, 0);
-        glTexCoord2f(0.50f, 1.0f); glVertex3f(xp, yp+1, 0);
-        glTexCoord2f(0.75f, 1.0f); glVertex3f(xp+1, yp+1, 0);
+        glTexCoord2f(0.50f, 0.5f); glVertex3f(xp, yp+1, 0);
+        glTexCoord2f(0.75f, 0.5f); glVertex3f(xp+1, yp+1, 0);
         glTexCoord2f(0.75f, 0.0f); glVertex3f(xp+1, yp, 0);
     }
 }
